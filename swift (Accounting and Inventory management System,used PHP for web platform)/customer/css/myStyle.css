@@ -1,0 +1,25 @@
+#sideNav{
+    background-color: #0d59af;
+    width: 190px;
+    position: absolute;
+    height: 100%;
+
+    font-size:.95em;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+}
+#li_s{
+    font-size: 1em;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-bottom: 10%;
+}
+#mainContent {
+    float: left;
+    width: 88%;
+    margin-left: 165px;
+}

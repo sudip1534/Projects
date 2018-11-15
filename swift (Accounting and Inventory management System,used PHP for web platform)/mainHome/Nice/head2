@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>PHP CRUD</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<style type="text/css">
+table tr th, table tr td{font-size: 1.2rem;}
+.row{ margin:20px 20px 20px 20px;width: 100%;}
+.glyphicon{font-size: 20px;}
+.glyphicon-plus{float: right;}
+a.glyphicon{text-decoration: none;}
+a.glyphicon-trash{margin-left: 10px;}
+.none{display: none;}
+</style>
+<script>
+function getUsers(){
+    $.ajax({
+        type: 'POST',
+        url: 'userAction.php',
+        data: 'action_type=view&'+$("#userForm").serialize(),
+        success:function(html){
+            $('#userData').html(html);
+        }
+    });
+}
+function userAction(type,id){
+    id = (typeof id == "undefined")?'':id;
+    var statusArr = {add:"added",edit:"updated",delete:"deleted"};
+    var userData = '';
+    if (type == 'add') {
+        userData = $("#addForm").find('.form').serialize()+'&action_type='+type+'&id='+id;
+    }else if (type == 'edit'){
+        userData = $("#editForm").find('.form').serialize()+'&action_type='+type;
+    }else{
+        userData = 'action_type='+type+'&id='+id;
+    }
+    $.ajax({
+        type: 'POST',
+        url: 'userAction.php',
+        data: userData,
+        success:function(msg){
+            if(msg == 'ok'){
+                alert('User data has been '+statusArr[type]+' successfully.');
+                getUsers();
+                $('.form')[0].reset();
+                $('.formData').slideUp();
+            }else{
+                alert('Some problem occurred, please try again.');
+            }
+        }
+    });
+}
+function editUser(id){
+    $.ajax({
+        type: 'POST',
+        dataType:'JSON',
+        url: 'userAction.php',
+        data: 'action_type=data&id='+id,
+        success:function(data){
+            $('#idEdit').val(data.id);
+            $('#nameEdit').val(data.name);
+            $('#emailEdit').val(data.email);
+            $('#phoneEdit').val(data.phone);
+            $('#editForm').slideDown();
+        }
+    });
+}
+</script>
+</head>
